@@ -1,0 +1,2888 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ali Nebi ER - AI Researcher & Computer Vision Engineer</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Color Palette */
+        :root {
+            --bg: #0A0A0F;
+            --surface: #111118;
+            --border: #1E1E2E;
+            --cyan: #00E5FF;
+            --cyan-dim: #00E5FF33;
+            --text: #E2E8F0;
+            --text-muted: #64748B;
+            --white: #FFFFFF;
+            --accent-dark: #0F0F1A;
+            --glow-color: #00E5FF;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--bg) 0%, var(--accent-dark) 100%);
+            background-attachment: fixed;
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(0, 229, 255, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 200, 255, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(255, 0, 229, 0.02) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .stars-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .star {
+            position: absolute;
+            background: radial-gradient(circle, var(--cyan) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(0.5px);
+            opacity: 0.8;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) translateX(0); }
+            100% { transform: translateY(-100vh) translateX(100px); }
+        }
+
+        @keyframes float-reverse {
+            0% { transform: translateY(0) translateX(0); }
+            100% { transform: translateY(-100vh) translateX(-100px); }
+        }
+
+        .star {
+            animation: twinkle 3s infinite ease-in-out;
+        }
+
+        .star.floating {
+            animation: twinkle 3s infinite ease-in-out, float 15s linear infinite;
+        }
+
+        .star.floating-reverse {
+            animation: twinkle 3s infinite ease-in-out, float-reverse 18s linear infinite;
+        }
+
+        /* Smooth Scroll Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--cyan) 0%, transparent 100%);
+            box-shadow: 0 0 10px var(--cyan), 0 0 20px rgba(0, 229, 255, 0.5);
+            z-index: 9999;
+            transition: width 0.1s ease;
+        }
+
+        /* Navigation Bar */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            backdrop-filter: blur(0px);
+            background: transparent;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid transparent;
+        }
+
+        nav.scrolled {
+            backdrop-filter: blur(10px);
+            background: rgba(10, 10, 15, 0.8);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--cyan);
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px var(--glow-color);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-menu a {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-menu a:hover {
+            color: var(--cyan);
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--cyan);
+            transition: width 0.3s ease;
+            box-shadow: 0 0 5px var(--glow-color);
+        }
+
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: var(--cyan);
+            margin: 5px 0;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(10px, 10px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 3rem;
+            padding-top: 70px;
+            gap: 4rem;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(0, 229, 255, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .hero-content {
+            flex: 1;
+            z-index: 1;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero-name {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--white);
+            text-shadow: 0 0 20px rgba(0, 229, 255, 0.3);
+            animation: slideInLeft 0.8s ease-out;
+        }
+
+        .typing-animation {
+            height: 2.5rem;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--cyan);
+            font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            min-height: 60px;
+        }
+
+        .cursor {
+            width: 3px;
+            height: 2em;
+            background: var(--cyan);
+            margin-left: 5px;
+            animation: blink 0.7s infinite;
+            box-shadow: 0 0 10px var(--glow-color);
+        }
+
+        @keyframes blink {
+            0%, 49%, 100% { opacity: 1; }
+            50%, 99% { opacity: 0; }
+        }
+
+        .hero-bio {
+            font-size: 1.1rem;
+            color: var(--text);
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            max-width: 600px;
+        }
+
+        .hero-bio strong {
+            color: var(--cyan);
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: 2px solid var(--cyan);
+            background: transparent;
+            color: var(--cyan);
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            border-radius: 4px;
+            font-family: 'Inter', sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--cyan-dim);
+            z-index: -1;
+            transition: left 0.3s ease;
+        }
+
+        .btn:hover::before {
+            left: 0;
+        }
+
+        .btn:hover {
+            box-shadow: 0 0 20px var(--glow-color), inset 0 0 20px rgba(0, 229, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: var(--cyan);
+            color: var(--bg);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 0 30px var(--glow-color);
+        }
+
+        .hero-stats {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            animation: fadeInUp 1.2s ease-out;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--surface) 0%, rgba(0, 229, 255, 0.05) 100%);
+            padding: 2rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 229, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .stat-card:hover {
+            border-color: var(--cyan);
+            box-shadow: 0 0 20px rgba(0, 229, 255, 0.3), inset 0 0 20px rgba(0, 229, 255, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .stat-card:hover::before {
+            left: 100%;
+        }
+
+        .stat-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--cyan);
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 10px var(--glow-color);
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* About Section */
+        .about {
+            min-height: 100vh;
+            padding: 6rem 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .about-content {
+            flex: 1;
+            max-width: 600px;
+        }
+
+        .section-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: var(--white);
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--cyan);
+            box-shadow: 0 0 10px var(--glow-color);
+        }
+
+        .about-text {
+            font-size: 1.05rem;
+            color: var(--text);
+            line-height: 1.9;
+            margin-bottom: 1.5rem;
+        }
+
+        .focus-areas {
+            flex: 1;
+        }
+
+        .focus-title {
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--cyan);
+            font-size: 1.1rem;
+        }
+
+        .tag-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+        }
+
+        .tag {
+            padding: 0.6rem 1.2rem;
+            background: linear-gradient(135deg, var(--surface), rgba(0, 229, 255, 0.05));
+            border: 1px solid var(--border);
+            color: var(--text);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+
+        .tag:hover {
+            border-color: var(--cyan);
+            background: linear-gradient(135deg, var(--surface), rgba(0, 229, 255, 0.15));
+            color: var(--cyan);
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
+            transform: translateY(-3px);
+        }
+
+        /* Experience Section */
+        .experience {
+            min-height: 100vh;
+            padding: 6rem 3rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .experience-title {
+            text-align: center;
+            margin-bottom: 4rem;
+            width: 100%;
+        }
+
+        .timeline {
+            max-width: 900px;
+            width: 100%;
+            position: relative;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--cyan), transparent);
+            box-shadow: 0 0 10px var(--glow-color);
+        }
+
+        .timeline-item {
+            margin-bottom: 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            animation: fadeInUp 0.8s ease-out;
+            opacity: 0;
+        }
+
+        .timeline-item.visible {
+            opacity: 1;
+        }
+
+        .timeline-item:nth-child(odd) {
+            flex-direction: row-reverse;
+        }
+
+        .timeline-content {
+            width: calc(50% - 2rem);
+            background: linear-gradient(135deg, var(--surface) 0%, rgba(0, 229, 255, 0.05) 100%);
+            padding: 2rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-content:hover {
+            border-color: var(--cyan);
+            box-shadow: 0 0 20px rgba(0, 229, 255, 0.3), inset 0 0 20px rgba(0, 229, 255, 0.1);
+        }
+
+        .timeline-dot {
+            width: 16px;
+            height: 16px;
+            background: var(--cyan);
+            border: 3px solid var(--bg);
+            border-radius: 50%;
+            position: absolute;
+            left: 50%;
+            top: 2rem;
+            transform: translateX(-50%);
+            box-shadow: 0 0 15px var(--glow-color);
+        }
+
+        .timeline-date {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--cyan);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-role {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 0.3rem;
+        }
+
+        .timeline-company-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .company-logo {
+            width: 44px;
+            height: 44px;
+            object-fit: contain;
+            flex-shrink: 0;
+            opacity: 0.85;
+            transition: opacity 0.3s ease;
+        }
+
+        .company-logo:hover {
+            opacity: 1;
+        }
+
+        .timeline-company {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .timeline-desc {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .timeline-desc li {
+            color: var(--text);
+            margin-left: 1.5rem;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Projects Section */
+        .projects {
+            min-height: 100vh;
+            padding: 6rem 3rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .projects-title {
+            text-align: center;
+            margin-bottom: 4rem;
+            width: 100%;
+        }
+
+        .carousel-container {
+            max-width: 1400px;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        .carousel-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .projects-grid {
+            display: flex;
+            gap: 2rem;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            padding-bottom: 1rem;
+        }
+
+        .projects-grid.scrolling {
+            scroll-behavior: auto;
+        }
+
+        .project-card {
+            background: linear-gradient(135deg, var(--surface) 0%, rgba(0, 229, 255, 0.05) 100%);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 2rem;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            animation: fadeInUp 0.8s ease-out;
+            opacity: 0;
+            flex: 0 0 calc(33.333% - 1.35rem);
+            min-width: 300px;
+        }
+
+        .project-card.visible {
+            opacity: 1;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 229, 255, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: all 0.4s ease;
+            pointer-events: none;
+        }
+
+        .project-card:hover {
+            border-color: var(--cyan);
+            box-shadow: 0 0 30px rgba(0, 229, 255, 0.4), inset 0 0 30px rgba(0, 229, 255, 0.1);
+            transform: translateY(-10px);
+        }
+
+        .project-card:hover::before {
+            opacity: 1;
+        }
+
+        .project-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 0.3rem;
+        }
+
+        .project-role {
+            color: var(--cyan);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+
+        .project-desc {
+            color: var(--text);
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .project-techs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tech-tag {
+            padding: 0.3rem 0.8rem;
+            background: rgba(0, 229, 255, 0.1);
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            color: var(--cyan);
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .project-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .project-links a {
+            flex: 1;
+            text-align: center;
+            padding: 0.6rem;
+            border: 1px solid var(--cyan);
+            color: var(--cyan);
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-links a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--cyan-dim);
+            z-index: -1;
+            transition: left 0.3s ease;
+        }
+
+        .project-links a:hover::before {
+            left: 0;
+        }
+
+        .project-links a:hover {
+            box-shadow: 0 0 15px var(--glow-color);
+            transform: translateY(-2px);
+        }
+
+        /* Carousel Controls */
+        .carousel-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .carousel-button {
+            width: 48px;
+            height: 48px;
+            border: 2px solid var(--cyan);
+            background: transparent;
+            color: var(--cyan);
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .carousel-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--cyan-dim);
+            z-index: -1;
+            transition: left 0.3s ease;
+        }
+
+        .carousel-button:hover::before {
+            left: 0;
+        }
+
+        .carousel-button:hover {
+            box-shadow: 0 0 20px var(--glow-color);
+            transform: scale(1.1);
+        }
+
+        .carousel-button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            transform: scale(1);
+        }
+
+        .carousel-button:disabled:hover {
+            box-shadow: none;
+        }
+
+        .carousel-indicators {
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+        }
+
+        .carousel-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--border);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .carousel-dot:hover {
+            border-color: var(--cyan);
+        }
+
+        .carousel-dot.active {
+            background: var(--cyan);
+            box-shadow: 0 0 10px var(--glow-color);
+            transform: scale(1.3);
+        }
+
+        .carousel-info {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-family: 'JetBrains Mono', monospace;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .project-card {
+                flex: 0 0 calc(50% - 1rem);
+                min-width: 200px;
+            }
+
+            .carousel-controls {
+                gap: 1rem;
+            }
+
+            .carousel-button {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .project-card {
+                flex: 0 0 100%;
+                min-width: 100%;
+            }
+
+            .projects-grid {
+                gap: 1rem;
+            }
+
+            .carousel-controls {
+                margin-top: 2rem;
+                gap: 0.8rem;
+            }
+        }
+
+        /* Skills Section */
+        .skills {
+            min-height: 100vh;
+            padding: 6rem 3rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .skills-title {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        .skill-category {
+            animation: fadeInUp 0.8s ease-out;
+            opacity: 0;
+        }
+
+        .skill-category.visible {
+            opacity: 1;
+        }
+
+        .skill-category-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--cyan);
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .skill-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+        }
+
+        .skill-item {
+            padding: 0.7rem 1.3rem;
+            background: linear-gradient(135deg, var(--surface), rgba(0, 229, 255, 0.05));
+            border: 1px solid var(--border);
+            color: var(--text);
+            border-radius: 4px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+
+        .skill-item:hover {
+            border-color: var(--cyan);
+            color: var(--cyan);
+            background: linear-gradient(135deg, var(--surface), rgba(0, 229, 255, 0.15));
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.2);
+            transform: translateY(-3px);
+        }
+
+        /* Publications Section */
+        .publications {
+            min-height: 100vh;
+            padding: 6rem 3rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .publications-content {
+            max-width: 900px;
+            width: 100%;
+        }
+
+        .publications-title {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .publication-item {
+            background: linear-gradient(135deg, var(--surface) 0%, rgba(0, 229, 255, 0.05) 100%);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.8s ease-out;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .publication-item.visible {
+            opacity: 1;
+        }
+
+        .publication-item:hover {
+            border-color: var(--cyan);
+            box-shadow: 0 0 20px rgba(0, 229, 255, 0.3), inset 0 0 20px rgba(0, 229, 255, 0.1);
+        }
+
+        .publication-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 0.8rem;
+        }
+
+        .publication-details {
+            color: var(--cyan);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .certification-list {
+            margin-top: 2rem;
+        }
+
+        .certification-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 1rem;
+        }
+
+        .certification-item {
+            color: var(--text);
+            padding-left: 1.5rem;
+            margin-bottom: 0.7rem;
+            position: relative;
+        }
+
+        .certification-item::before {
+            content: '·';
+            position: absolute;
+            left: 0;
+            color: var(--cyan);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* Contact Section */
+        .contact {
+            min-height: 100vh;
+            padding: 6rem 3rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .contact-title {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .contact-tagline {
+            font-size: 1.3rem;
+            color: var(--text);
+            margin-bottom: 3rem;
+            font-weight: 300;
+        }
+
+        .contact-links {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+
+        .contact-link {
+            padding: 0.8rem 1.5rem;
+            border: 2px solid var(--cyan);
+            background: transparent;
+            color: var(--cyan);
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .contact-link:hover {
+            background: var(--cyan);
+            color: var(--bg);
+            box-shadow: 0 0 30px var(--glow-color);
+        }
+
+        .contact-info {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-top: 3rem;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes glow-pulse {
+            0%, 100% {
+                text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+            }
+            50% {
+                text-shadow: 0 0 20px rgba(0, 229, 255, 0.8);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+                position: absolute;
+                top: 70px;
+                right: 0;
+                left: 0;
+                flex-direction: column;
+                background: rgba(10, 10, 15, 0.95);
+                backdrop-filter: blur(10px);
+                padding: 2rem;
+                gap: 1rem;
+                border-bottom: 1px solid var(--border);
+                list-style: none;
+            }
+
+            .nav-menu.active {
+                display: flex;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .hero {
+                flex-direction: column;
+                padding: 0 1.5rem;
+                gap: 2rem;
+                text-align: center;
+            }
+
+            .hero-name {
+                font-size: 2.2rem;
+            }
+
+            .typing-animation {
+                font-size: 1.2rem;
+            }
+
+            .hero-cta {
+                justify-content: center;
+            }
+
+            .hero-stats {
+                gap: 1rem;
+            }
+
+            .about {
+                flex-direction: column;
+                padding: 3rem 1.5rem;
+                gap: 2rem;
+            }
+
+            .timeline::before {
+                left: 20px;
+            }
+
+            .timeline-item {
+                flex-direction: column !important;
+                margin-left: 60px;
+            }
+
+            .timeline-content {
+                width: 100%;
+            }
+
+            .timeline-dot {
+                left: 0;
+                top: 0;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .hero-name {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            nav {
+                padding: 0 1rem;
+            }
+
+            .hero {
+                padding: 0 1rem;
+            }
+
+            .hero-name {
+                font-size: 1.8rem;
+            }
+
+            .hero-bio {
+                font-size: 1rem;
+            }
+
+            .btn {
+                font-size: 0.85rem;
+                padding: 0.7rem 1.2rem;
+            }
+
+            .about {
+                padding: 2rem 1rem;
+            }
+
+            .experience, .projects, .skills, .contact {
+                padding: 3rem 1rem;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--cyan);
+            border-radius: 4px;
+            box-shadow: 0 0 10px var(--glow-color);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00d9f0;
+        }
+
+        /* Blog Section */
+        .blog {
+            min-height: 100vh;
+            padding: 6rem 3rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .blog-title {
+            text-align: center;
+            margin-bottom: 4rem;
+            width: 100%;
+        }
+
+        .blog-grid {
+            display: flex;
+            gap: 2rem;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            padding-bottom: 1rem;
+        }
+
+        .blog-card {
+            background: linear-gradient(135deg, var(--surface) 0%, rgba(0, 229, 255, 0.05) 100%);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 2rem;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            animation: fadeInUp 0.8s ease-out;
+            opacity: 0;
+            flex: 0 0 calc(33.333% - 1.35rem);
+            min-width: 300px;
+            cursor: pointer;
+        }
+
+        .blog-card.visible {
+            opacity: 1;
+        }
+
+        .blog-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 229, 255, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: all 0.4s ease;
+            pointer-events: none;
+        }
+
+        .blog-card:hover {
+            border-color: var(--cyan);
+            box-shadow: 0 0 30px rgba(0, 229, 255, 0.4), inset 0 0 30px rgba(0, 229, 255, 0.1);
+            transform: translateY(-10px);
+        }
+
+        .blog-card:hover::before {
+            opacity: 1;
+        }
+
+        .blog-date {
+            color: var(--cyan);
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.8rem;
+        }
+
+        .blog-title-text {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 1rem;
+            line-height: 1.5;
+            transition: color 0.3s ease;
+        }
+
+        .blog-card:hover .blog-title-text {
+            color: var(--cyan);
+        }
+
+        .blog-excerpt {
+            color: var(--text);
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 1rem;
+            flex-grow: 1;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .blog-category {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background: rgba(0, 229, 255, 0.1);
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            color: var(--cyan);
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .blog-read-time {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: auto;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .blog-read-more {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--cyan);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .blog-read-more:hover {
+            gap: 1rem;
+        }
+
+        .blog-loading {
+            color: var(--text-muted);
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .blog-error {
+            color: #ff6b6b;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        /* Blog Carousel */
+        .blog-carousel-container {
+            max-width: 1400px;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        .blog-carousel-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .blog-carousel-button {
+            width: 48px;
+            height: 48px;
+            border: 2px solid var(--cyan);
+            background: transparent;
+            color: var(--cyan);
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .blog-carousel-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--cyan-dim);
+            z-index: -1;
+            transition: left 0.3s ease;
+        }
+
+        .blog-carousel-button:hover::before {
+            left: 0;
+        }
+
+        .blog-carousel-button:hover {
+            box-shadow: 0 0 20px var(--glow-color);
+            transform: scale(1.1);
+        }
+
+        .blog-carousel-button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            transform: scale(1);
+        }
+
+        .blog-carousel-button:disabled:hover {
+            box-shadow: none;
+        }
+
+        .blog-carousel-info {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-family: 'JetBrains Mono', monospace;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .blog-card {
+                flex: 0 0 calc(50% - 1rem);
+                min-width: 200px;
+            }
+
+            .blog-carousel-controls {
+                gap: 1rem;
+            }
+
+            .blog-carousel-button {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .blog-card {
+                flex: 0 0 100%;
+                min-width: 100%;
+            }
+
+            .blog-grid {
+                gap: 1rem;
+            }
+
+            .blog-carousel-controls {
+                margin-top: 1.5rem;
+                gap: 0.8rem;
+            }
+        }
+
+        /* Blog Carousel */
+        .blog-carousel-container {
+            max-width: 1400px;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+
+        .blog-carousel-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .blog-carousel-button {
+            width: 48px;
+            height: 48px;
+            border: 2px solid var(--cyan);
+            background: transparent;
+            color: var(--cyan);
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .blog-carousel-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--cyan-dim);
+            z-index: -1;
+            transition: left 0.3s ease;
+        }
+
+        .blog-carousel-button:hover::before {
+            left: 0;
+        }
+
+        .blog-carousel-button:hover {
+            box-shadow: 0 0 20px var(--glow-color);
+            transform: scale(1.1);
+        }
+
+        .blog-carousel-button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            transform: scale(1);
+        }
+
+        .blog-carousel-button:disabled:hover {
+            box-shadow: none;
+        }
+
+        .blog-carousel-info {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-family: 'JetBrains Mono', monospace;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .blog-card {
+                flex: 0 0 calc(50% - 1rem);
+                min-width: 200px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .blog-card {
+                flex: 0 0 100%;
+                min-width: 100%;
+            }
+
+            .blog-grid {
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars-container"></div>
+    <div class="progress-bar"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-logo">ANE</div>
+        <ul class="nav-menu">
+            <li><a href="#about">About</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#blog">Blog</a></li>
+            <li><a href="#publications">Publications</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <h1 class="hero-name">Ali Nebi ER</h1>
+            <div class="typing-animation">
+                <span id="typing"></span><span class="cursor"></span>
+            </div>
+            <p class="hero-bio">
+                <strong>B.Sc. Computer Engineering</strong> student at Fırat Üniversitesi, specializing in multimodal deep learning, medical AI, and autonomous systems. <strong>TEKNOFEST Finalist</strong> · <strong>FET'26 Published Author</strong>.
+            </p>
+            <div class="hero-cta">
+                <a href="#" class="btn btn-primary">Download CV ↓</a>
+                <a href="https://github.com/TITANBGG" target="_blank" rel="noopener" class="btn">GitHub ↗</a>
+                <a href="https://linkedin.com/in/alinebier" target="_blank" rel="noopener" class="btn">LinkedIn ↗</a>
+            </div>
+        </div>
+
+        <div class="hero-stats">
+            <div class="stat-card">
+                <div class="stat-number">120+</div>
+                <div class="stat-label">Projects Built</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">1200+</div>
+                <div class="stat-label">Community Members</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">1</div>
+                <div class="stat-label">Publication FET'26</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">3×</div>
+                <div class="stat-label">TEKNOFEST Finalist</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="about-content">
+            <h2 class="section-title">About</h2>
+            <p class="about-text">
+                I'm an AI researcher and computer vision engineer passionate about solving real-world problems at the intersection of deep learning and healthcare. Currently pursuing my degree in Computer Engineering, I've contributed to cutting-edge projects in multimodal AI, medical imaging, autonomous systems, and LLM-based applications.
+            </p>
+        </div>
+        <div class="focus-areas">
+            <h3 class="focus-title">Core Focus Areas</h3>
+            <div class="tag-cloud">
+                <span class="tag">Computer Vision</span>
+                <span class="tag">Medical AI</span>
+                <span class="tag">LLMs & NLP</span>
+                <span class="tag">Autonomous Systems</span>
+                <span class="tag">Deep Learning</span>
+                <span class="tag">MLOps</span>
+                <span class="tag">Explainable AI</span>
+                <span class="tag">Multimodal Learning</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section class="experience" id="experience">
+        <div class="experience-title">
+            <h2 class="section-title">Experience</h2>
+        </div>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">Oct 2025 – Present</div>
+                    <div class="timeline-role">AI Software Developer</div>
+                    <div class="timeline-company-wrapper">
+                        <img class="company-logo" src="./images/yoda.jpg" alt="YTU YODA">
+                        <div class="timeline-company">YTU YODA Autonomous Team</div>
+                    </div>
+                    <ul class="timeline-desc">
+                        <li>Developing perception pipeline for TEKNOFEST Robotaksi autonomous vehicle competition</li>
+                        <li>Lane detection, traffic sign recognition, multi-sensor fusion</li>
+                        <li><strong>Tech:</strong> Python, PyTorch, OpenCV, ROS, Docker</li>
+                    </ul>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">Jul 2025 – Dec 2025</div>
+                    <div class="timeline-role">Mentor Leader</div>
+                    <div class="timeline-company-wrapper">
+                        <img class="company-logo" src="./images/YetGen Circle.png" alt="YetGen">
+                        <div class="timeline-company">YetGen Community (1200+ members)</div>
+                    </div>
+                    <ul class="timeline-desc">
+                        <li>Leading 1200+ member AI and technology community in Turkey</li>
+                        <li>Organizing workshops, mentorship programs, and leadership initiatives</li>
+                        <li>Building ecosystem for next-generation tech leaders and innovators</li>
+                    </ul>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">Jun 2025 – Dec 2025</div>
+                    <div class="timeline-role">AI Research Intern</div>
+                    <div class="timeline-company-wrapper">
+                        <img class="company-logo" src="./images/firatuni.png" alt="Fırat Üniversitesi">
+                        <div class="timeline-company">Fırat Üniversitesi (Prof. Dr. Mehmet Kaya)</div>
+                    </div>
+                    <ul class="timeline-desc">
+                        <li>Designed multimodal fusion model combining chest X-ray images and clinical text for lung cancer detection</li>
+                        <li>Implemented Grad-CAM explainability; paper accepted to FET'26 conference</li>
+                        <li><strong>Tech:</strong> PyTorch, HuggingFace, Grad-CAM, W&B</li>
+                    </ul>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">2024 – Present</div>
+                    <div class="timeline-role">Freelance AI & Web Developer</div>
+                    <div class="timeline-company-wrapper">
+                        <img class="company-logo" src="./images/upwork.png" alt="Upwork">
+                        <div class="timeline-company">Upwork</div>
+                    </div>
+                    <ul class="timeline-desc">
+                        <li>N8N workflow automation, AI agents, LLM-powered chatbots</li>
+                        <li>Full-stack web development and AI model deployment</li>
+                        <li><strong>Tech:</strong> Python, JavaScript, FastAPI, N8N, LLMs</li>
+                    </ul>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">Oct 2023 – Nov 2024</div>
+                    <div class="timeline-role">Lead Organizer</div>
+                    <div class="timeline-company-wrapper">
+                        <img class="company-logo" src="./images/GoogleDeveloperStudentClup.jpg" alt="Google DSC">
+                        <div class="timeline-company">Google Developer Student Clubs (ITER)</div>
+                    </div>
+                    <ul class="timeline-desc">
+                        <li>Organized workshops, hackathons, and technical talks for 200+ students</li>
+                        <li>Led development community initiatives and mentorship programs</li>
+                        <li><strong>Focus:</strong> AI, Web Development, Cloud Technologies</li>
+                    </ul>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">Aug – Oct 2024</div>
+                    <div class="timeline-role">Full-Stack Development Intern</div>
+                    <div class="timeline-company-wrapper">
+                        <img class="company-logo" src="./images/digitalkuryazilim.png" alt="Dijital Küre">
+                        <div class="timeline-company">Dijital Küre Yazılım</div>
+                    </div>
+                    <ul class="timeline-desc">
+                        <li>React.js frontend, Node.js backend, NLP chatbot projects</li>
+                        <li>Full-stack web application development</li>
+                        <li><strong>Tech:</strong> React, Node.js, NLP, Python</li>
+                    </ul>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">Aug – Sep 2024</div>
+                    <div class="timeline-role">NLP Intern</div>
+                    <div class="timeline-company-wrapper">
+                        <img class="company-logo" src="./images/yonkasoft.jpg" alt="YONKA Soft">
+                        <div class="timeline-company">YONKA Soft</div>
+                    </div>
+                    <ul class="timeline-desc">
+                        <li>NLP model development and preprocessing pipeline design</li>
+                        <li>Text analysis and language understanding projects</li>
+                        <li><strong>Tech:</strong> NLTK, spaCy, Python</li>
+                    </ul>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">2022 – 2025</div>
+                    <div class="timeline-role">AI Developer & Project Lead</div>
+                    <div class="timeline-company-wrapper">
+                        <img class="company-logo" src="./images/teknofest.png" alt="TEKNOFEST">
+                        <div class="timeline-company">TEKNOFEST (3x National Finalist)</div>
+                    </div>
+                    <ul class="timeline-desc">
+                        <li><strong>AgroScan AI (2023):</strong> CNN-based plant disease detection (90%+ accuracy)</li>
+                        <li><strong>X-Ray Analysis (2024):</strong> Multimodal fusion for chest imaging</li>
+                        <li>Led teams of 5-8 people, managed end-to-end ML pipelines, achieved national recognition</li>
+                    </ul>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">Sep – Nov 2023</div>
+                    <div class="timeline-role">Project Manager & Developer</div>
+                    <div class="timeline-company-wrapper">
+                        <img class="company-logo" src="./images/Nasa.png" alt="NASA">
+                        <div class="timeline-company">NASA App Challenge</div>
+                    </div>
+                    <ul class="timeline-desc">
+                        <li>Managed team for space-tech hackathon competition</li>
+                        <li>Integrated NASA APIs and satellite data for Earth observation</li>
+                        <li><strong>Tech:</strong> Python, API Integration, Data Analysis</li>
+                    </ul>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">Sep – Nov 2023</div>
+                    <div class="timeline-role">Project Manager</div>
+                    <div class="timeline-company-wrapper">
+                        <img class="company-logo" src="./images/yildizyapayzeka_logo.jpg" alt="Yıldız Yapay Zekâ">
+                        <div class="timeline-company">Yıldız Yapay Zekâ (AI Community)</div>
+                    </div>
+                    <ul class="timeline-desc">
+                        <li>Managed AI projects and initiatives for community of 500+ members</li>
+                        <li>Coordinated technical workshops and research discussions</li>
+                        <li><strong>Focus:</strong> Computer Vision, NLP, Deep Learning</li>
+                    </ul>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">Jun – May 2024</div>
+                    <div class="timeline-role">Community Manager</div>
+                    <div class="timeline-company">Yıldız Yapay Zekâ (AI Community)</div>
+                    <ul class="timeline-desc">
+                        <li>Built and managed active AI/Tech community (500+ members)</li>
+                        <li>Organized seminars, study groups, and networking events</li>
+                        <li>Fostered collaboration between students and industry professionals</li>
+                    </ul>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">Jul – Aug 2023</div>
+                    <div class="timeline-role">Technology Intern</div>
+                    <div class="timeline-company-wrapper">
+                        <img class="company-logo" src="./images/halkbank.jpg" alt="Halkbank">
+                        <div class="timeline-company">Halkbank A.Ş.</div>
+                    </div>
+                    <ul class="timeline-desc">
+                        <li>Digital transformation and banking technology projects</li>
+                        <li>Exposure to enterprise-scale software and financial systems</li>
+                        <li><strong>Tech:</strong> Enterprise Systems, Finance Tech</li>
+                    </ul>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="projects" id="projects">
+        <div class="projects-title">
+            <h2 class="section-title">Projects</h2>
+        </div>
+
+        <div class="carousel-container">
+            <div class="carousel-wrapper">
+                <div class="projects-grid" id="projects-carousel">
+                    <div class="project-card">
+                        <div class="project-role">Healthcare AI</div>
+                        <div class="project-name">SağlıkCebim</div>
+                        <div class="project-desc">
+                            Comprehensive Turkish medical AI platform. Multimodal clinical decision support combining radiology AI (DenseNet-121), automated blood test result analysis, and patient anamnesis processing.
+                        </div>
+                        <div class="project-techs">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">PyTorch</span>
+                            <span class="tech-tag">FastAPI</span>
+                            <span class="tech-tag">Medical Imaging</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/TITANBGG" target="_blank" rel="noopener">View Repo</a>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <div class="project-role">TEKNOFEST Finalist</div>
+                        <div class="project-name">AgroScan AI</div>
+                        <div class="project-desc">
+                            CNN-based plant disease detection achieving 90%+ accuracy. Integrated mobile application with Firebase backend for real-time diagnosis in agricultural settings.
+                        </div>
+                        <div class="project-techs">
+                            <span class="tech-tag">TensorFlow</span>
+                            <span class="tech-tag">OpenCV</span>
+                            <span class="tech-tag">Firebase</span>
+                            <span class="tech-tag">Android</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/TITANBGG" target="_blank" rel="noopener">GitHub</a>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <div class="project-role">FET'26 Published</div>
+                        <div class="project-name">X-Ray Multimodal Fusion</div>
+                        <div class="project-desc">
+                            Vision-language fusion model for lung cancer detection from chest X-rays combined with clinical reports. Includes Grad-CAM explainability for clinical interpretability.
+                        </div>
+                        <div class="project-techs">
+                            <span class="tech-tag">PyTorch</span>
+                            <span class="tech-tag">HuggingFace</span>
+                            <span class="tech-tag">YOLO</span>
+                            <span class="tech-tag">W&B</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/TITANBGG" target="_blank" rel="noopener">Paper</a>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <div class="project-role">Computer Vision</div>
+                        <div class="project-name">Driver Drowsiness Detection</div>
+                        <div class="project-desc">
+                            Real-time fatigue detection system combining YOLOv5 for face detection with LSTM for temporal micro-sleep and eye closure patterns. Safety-critical application.
+                        </div>
+                        <div class="project-techs">
+                            <span class="tech-tag">YOLOv5</span>
+                            <span class="tech-tag">LSTM</span>
+                            <span class="tech-tag">OpenCV</span>
+                            <span class="tech-tag">Python</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/TITANBGG" target="_blank" rel="noopener">GitHub</a>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <div class="project-role">Full-Stack AI</div>
+                        <div class="project-name">E-Sınıf: AI-Powered LMS</div>
+                        <div class="project-desc">
+                            Learning Management System with FastAPI backend and Google Gemini API integration for automatic assignment evaluation, grading, and personalized feedback.
+                        </div>
+                        <div class="project-techs">
+                            <span class="tech-tag">FastAPI</span>
+                            <span class="tech-tag">SQLite</span>
+                            <span class="tech-tag">Gemini API</span>
+                            <span class="tech-tag">Python</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/TITANBGG" target="_blank" rel="noopener">GitHub</a>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <div class="project-role">Healthcare ML</div>
+                        <div class="project-name">Diabetes Prediction System</div>
+                        <div class="project-desc">
+                            Machine learning ensemble achieving 92.3% accuracy and 0.95 AUC-ROC. Includes Streamlit physician dashboard for interpretable clinical decision support.
+                        </div>
+                        <div class="project-techs">
+                            <span class="tech-tag">scikit-learn</span>
+                            <span class="tech-tag">XGBoost</span>
+                            <span class="tech-tag">Streamlit</span>
+                            <span class="tech-tag">Python</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/TITANBGG" target="_blank" rel="noopener">GitHub</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="carousel-controls">
+            <button class="carousel-button" id="carousel-prev" aria-label="Previous projects">
+                ←
+            </button>
+            <div class="carousel-info">
+                <span id="carousel-counter">1</span> / <span id="carousel-total">6</span>
+            </div>
+            <div class="carousel-indicators" id="carousel-indicators"></div>
+            <button class="carousel-button" id="carousel-next" aria-label="Next projects">
+                →
+            </button>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section class="skills" id="skills">
+        <div class="skills-title">
+            <h2 class="section-title">Skills</h2>
+        </div>
+
+        <div class="skills-grid">
+            <div class="skill-category">
+                <div class="skill-category-title">AI & Machine Learning</div>
+                <div class="skill-items">
+                    <span class="skill-item">PyTorch</span>
+                    <span class="skill-item">TensorFlow/Keras</span>
+                    <span class="skill-item">HuggingFace</span>
+                    <span class="skill-item">YOLOv5/v8</span>
+                    <span class="skill-item">OpenCV</span>
+                    <span class="skill-item">scikit-learn</span>
+                    <span class="skill-item">Grad-CAM</span>
+                    <span class="skill-item">Weights & Biases</span>
+                </div>
+            </div>
+
+            <div class="skill-category">
+                <div class="skill-category-title">Programming Languages</div>
+                <div class="skill-items">
+                    <span class="skill-item">Python</span>
+                    <span class="skill-item">C#</span>
+                    <span class="skill-item">JavaScript</span>
+                    <span class="skill-item">React.js</span>
+                    <span class="skill-item">Node.js</span>
+                    <span class="skill-item">SQL</span>
+                </div>
+            </div>
+
+            <div class="skill-category">
+                <div class="skill-category-title">Tools & Infrastructure</div>
+                <div class="skill-items">
+                    <span class="skill-item">Git/GitHub</span>
+                    <span class="skill-item">Docker</span>
+                    <span class="skill-item">FastAPI</span>
+                    <span class="skill-item">ROS</span>
+                    <span class="skill-item">Linux</span>
+                    <span class="skill-item">Firebase</span>
+                    <span class="skill-item">AWS</span>
+                    <span class="skill-item">Google Cloud</span>
+                    <span class="skill-item">N8N</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Publications Section -->
+    <section class="blog" id="blog">
+        <div class="blog-title">
+            <h2 class="section-title">Blog & Articles</h2>
+        </div>
+        
+        <div class="blog-carousel-container">
+            <div class="blog-grid" id="blog-carousel">
+                <div class="blog-loading">Loading Medium articles...</div>
+            </div>
+        </div>
+
+        <div class="blog-carousel-controls">
+            <button class="blog-carousel-button" id="blog-carousel-prev" aria-label="Previous articles">
+                ←
+            </button>
+            <div class="blog-carousel-info">
+                <span id="blog-carousel-counter">1</span> / <span id="blog-carousel-total">30</span>
+            </div>
+            <button class="blog-carousel-button" id="blog-carousel-next" aria-label="Next articles">
+                →
+            </button>
+        </div>
+    </section>
+
+    <!-- Publications Section -->
+    <section class="publications" id="publications">
+        <div class="publications-content">
+            <div class="publications-title">
+                <h2 class="section-title">Education</h2>
+            </div>
+
+            <div class="publication-item">
+                <div class="publication-title">B.Sc. Computer Engineering</div>
+                <div class="publication-details">Fırat Üniversitesi · Sep 2023 - Jun 2026</div>
+                <p style="color: var(--text); margin-top: 0.5rem; line-height: 1.7;">
+                    <strong>GPA: 3.2</strong> · Specialization: AI, Computer Vision, Deep Learning
+                </p>
+            </div>
+
+            <div class="publication-item">
+                <div class="publication-title">B.Sc. Computer Engineering</div>
+                <div class="publication-details">İskenderun Teknik Üniversitesi (İSTE) · Aug 2022 - Oct 2023</div>
+            </div>
+
+            <div class="publication-item">
+                <div class="publication-title">High School Diploma (Sayısal)</div>
+                <div class="publication-details">Bağlarbaşı Anadolu Lisesi · Aug 2017 - Aug 2020</div>
+            </div>
+
+            <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border);">
+                <div class="publications-title" style="margin-bottom: 2rem; margin-top: 0;">
+                    <h2 class="section-title">Publications & Certifications</h2>
+                </div>
+
+                <div class="publication-item">
+                    <div class="publication-title">
+                        Chest X-Ray Diagnosis Using Multimodal Fusion of Images and Clinical Reports
+                    </div>
+                    <div class="publication-details">
+                        FET'26 · International Conference on Frontiers of Engineering and Emerging Technologies · March 7, 2026
+                    </div>
+                    <p style="color: var(--text); margin-top: 1rem; line-height: 1.7;">
+                        Published research on vision-language fusion models for automated chest X-ray diagnosis. Incorporates explainability through Grad-CAM visualization and achieves state-of-the-art performance on multimodal medical imaging tasks.
+                    </p>
+                </div>
+
+                <div class="certification-list">
+                    <div class="certification-title">Professional Certifications & Achievements</div>
+                    <div class="certification-item">Akbank Deep Learning Bootcamp – Deep Learning, LLMs, CNNs, Medical Imaging AI, XAI, PyTorch, NLP, Computer Vision (2025)</div>
+                    <div class="certification-item">NASA AI/ML for Space Biology Research – NASA Ames Research Center (2025)</div>
+                    <div class="certification-item">AI & Technology Academy (Google) – 9-month track in AI, web application development and entrepreneurship (2024–2025)</div>
+                    <div class="certification-item">Machine Learning with Python – IBM (2025)</div>
+                    <div class="certification-item">Foundations of Data Science – Google (2025)</div>
+                    <div class="certification-item">Google Project Management Foundations – Project Initiation & Planning (2025)</div>
+                    <div class="certification-item">YetGen Leadership & 21st Century Competencies Program (2023–2024) – Leadership, teamwork, project & career management</div>
+                    <div class="certification-item">Wtech & TürkTraktör Technology & Innovation Programs (2023) – Product development and innovation</div>
+                    <div class="certification-item">TÜSİAD Entrepreneurship Programs – Startup fundamentals and business modelling (2023)</div>
+                    <div class="certification-item">CYDD & Mentornink Mentorship Programs (2024–2025) – Long-term mentorship and career development</div>
+                    <div class="certification-item">AFAD Disaster Management Trainings (2023) – Crisis management and disaster response</div>
+                    <div class="certification-item">TÜBİTAK Undergraduate Project Writing Training (2023–2024) – Scientific research and proposal writing</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="contact-title">
+            <h2 class="section-title">Let's Build Something</h2>
+        </div>
+        <p class="contact-tagline">
+            Interested in AI, healthcare tech, or autonomous systems? Let's collaborate.
+        </p>
+        <div class="contact-links">
+            <a href="mailto:alinebier138@gmail.com" class="contact-link">Email</a>
+            <a href="https://github.com/TITANBGG" target="_blank" rel="noopener" class="contact-link">GitHub</a>
+            <a href="https://linkedin.com/in/alinebier" target="_blank" rel="noopener" class="contact-link">LinkedIn</a>
+            <a href="#" class="btn btn-primary" style="padding: 0.8rem 1.5rem;">Download CV</a>
+        </div>
+        <div class="contact-info">
+            <p>alinebier138@gmail.com · Istanbul, Turkey · 2026</p>
+        </div>
+    </section>
+
+    <script>
+        // Galaxy/Stars Animation
+        function createStars() {
+            const starsContainer = document.querySelector('.stars-container');
+            const starCount = 80;
+
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                
+                const size = Math.random() * 3 + 0.5;
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
+                
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                star.style.left = x + '%';
+                star.style.top = y + '%';
+                
+                // Random animation delay
+                const delay = Math.random() * 5;
+                star.style.animationDelay = delay + 's';
+                
+                // Add floating animation to some stars
+                if (Math.random() > 0.7) {
+                    star.classList.add(Math.random() > 0.5 ? 'floating' : 'floating-reverse');
+                    star.style.animationDelay = (delay + Math.random() * 2) + 's';
+                }
+                
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Typing Animation
+        const roles = ['AI Researcher', 'CV Engineer', 'Medical AI Specialist', 'Full-Stack AI Developer'];
+        let currentRoleIndex = 0;
+        let currentCharIndex = 0;
+        let isDeleting = false;
+        const typingSpeed = 50;
+        const deletingSpeed = 30;
+        const delayBetweenRoles = 2000;
+
+        function typeRole() {
+            const typingElement = document.getElementById('typing');
+            const currentRole = roles[currentRoleIndex];
+
+            if (isDeleting) {
+                currentCharIndex--;
+            } else {
+                currentCharIndex++;
+            }
+
+            typingElement.textContent = currentRole.substring(0, currentCharIndex) + '_';
+
+            if (!isDeleting && currentCharIndex === currentRole.length) {
+                isDeleting = true;
+                setTimeout(typeRole, delayBetweenRoles);
+                return;
+            }
+
+            if (isDeleting && currentCharIndex === 0) {
+                isDeleting = false;
+                currentRoleIndex = (currentRoleIndex + 1) % roles.length;
+            }
+
+            const speed = isDeleting ? deletingSpeed : typingSpeed;
+            setTimeout(typeRole, speed);
+        }
+
+        // Carousel Functionality
+        let currentSlide = 0;
+        let autoPlayInterval;
+        const carousel = document.getElementById('projects-carousel');
+        const prevBtn = document.getElementById('carousel-prev');
+        const nextBtn = document.getElementById('carousel-next');
+        const indicatorsContainer = document.getElementById('carousel-indicators');
+        
+        const cards = Array.from(carousel.querySelectorAll('.project-card'));
+        const totalSlides = cards.length;
+        
+        // Create indicators
+        function createIndicators() {
+            for (let i = 0; i < totalSlides; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+                dot.addEventListener('click', () => goToSlide(i));
+                indicatorsContainer.appendChild(dot);
+            }
+        }
+
+        function updateCarousel() {
+            const visibleCards = window.innerWidth >= 768 ? 3 : window.innerWidth >= 480 ? 2 : 1;
+            const scrollDistance = (100 / visibleCards) * currentSlide;
+            carousel.scrollLeft = (carousel.scrollWidth / totalSlides) * currentSlide;
+            
+            // Update indicators
+            document.querySelectorAll('.carousel-dot').forEach((dot, idx) => {
+                dot.classList.toggle('active', idx === currentSlide);
+            });
+            
+            // Update counter
+            document.querySelectorAll('#carousel-counter').forEach(el => {
+                el.textContent = currentSlide + 1;
+            });
+            
+            // Update button states
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === totalSlides - 1;
+        }
+
+        function goToSlide(n) {
+            currentSlide = Math.max(0, Math.min(n, totalSlides - 1));
+            updateCarousel();
+            resetAutoPlay();
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                updateCarousel();
+                resetAutoPlay();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateCarousel();
+                resetAutoPlay();
+            }
+        }
+
+        function autoPlay() {
+            autoPlayInterval = setInterval(() => {
+                if (currentSlide < totalSlides - 1) {
+                    currentSlide++;
+                } else {
+                    currentSlide = 0;
+                }
+                updateCarousel();
+            }, 5000);
+        }
+
+        function resetAutoPlay() {
+            clearInterval(autoPlayInterval);
+            autoPlay();
+        }
+
+        // Event listeners
+        prevBtn.addEventListener('click', prevSlide);
+        nextBtn.addEventListener('click', nextSlide);
+
+        // Pause autoplay on hover
+        carousel.addEventListener('mouseenter', () => clearInterval(autoPlayInterval));
+        carousel.addEventListener('mouseleave', autoPlay);
+
+        // Initialize carousel
+        createIndicators();
+        updateCarousel();
+        autoPlay();
+
+        // Reinitialize on window resize
+        window.addEventListener('resize', updateCarousel);
+
+        // Load Medium Articles
+        async function loadMediumArticles() {
+            const blogGrid = document.getElementById('blog-carousel');
+            const mediumUsername = 'alinebier138';
+            
+            // Hardcoded articles as fallback (from Medium profile) - Sorted by date (newest first)
+            const fallbackArticles = [
+                {
+                    title: "Machiavelli'nin Prensi - 1. Giriş: Makyavelizm Nedir?",
+                    excerpt: "Machiavelli'nin Prensi, 16. yüzyılda yazılmış olmasına rağmen, günümüzün politik ve profesyonel dünyasında hala geçerliliğini koruyor.",
+                    date: "Aug 21, 2025",
+                    readTime: 8,
+                    link: "https://medium.com/@alinebier138"
+                },
+                {
+                    title: "12 Öfkeli Adam: Tek Bir Kişi Ne Yapabilir ki?",
+                    excerpt: "Sidney Lumet'in 1957 yapımı, 12 Öfkeli Adam, sinemanın en etkili yapıtlarından biridir. Bir insanın değişim güçü...",
+                    date: "Sep 16, 2024",
+                    readTime: 7,
+                    link: "https://medium.com/@alinebier138"
+                },
+                {
+                    title: "Neden GodFather Unutulmaz Bir Başyapıttır?",
+                    excerpt: "Bir film düşünün, 1972 yılında çıkmış, üzerinden yıllar geçmesine rağmen hâlâ sinemasevierlerin favorisi olan bir şeyde.",
+                    date: "Sep 8, 2024",
+                    readTime: 6,
+                    link: "https://medium.com/@alinebier138"
+                },
+                {
+                    title: "Kaybolmadan Bulamazsın: Bab'Aziz Üzerine",
+                    excerpt: "Bazı insanlar hayatı anlamlandırmaya çalışarak gecirir. Her seyi bir yere koymak isterler. Ama bu çabaları her zaman başarılı olmaz.",
+                    date: "2h ago",
+                    readTime: 7,
+                    link: "https://medium.com/@alinebier138"
+                },
+                {
+                    title: "Bir İnsan Hayatına Dokunmadan Seni Nasıl Değiştirir: İliber Ortaylı",
+                    excerpt: "Bazı insanlar hayatına hiç dokunmadan dokunur. Her seyi bir yere koymak isterler ve yaşadıkları her anın, kurdukları her...",
+                    date: "5d ago",
+                    readTime: 8,
+                    link: "https://medium.com/@alinebier138"
+                },
+                {
+                    title: "Yapay Zekâ ile Büyüyen Bir Neslin İçinden Konuşuyorum",
+                    excerpt: "Ben bilgisayarı ilk kez 'sihirli kutu' sanan jenerasyondan değilim; ben bilgisayarı açtığında seni aynı anda sosyal medya, ders...",
+                    date: "Dec 6, 2025",
+                    readTime: 9,
+                    link: "https://medium.com/@alinebier138"
+                },
+                {
+                    title: "Büyük Dil Modelleri Duvara mı Çarptı?",
+                    excerpt: "Selam, ben Ali Nebi Er. Bugünkü yazıda bıl bol soru soruyorum ve bu sorularla birlikte, yapay zekânın nereve gittiğini kendi...",
+                    date: "Nov 29, 2025",
+                    readTime: 6,
+                    link: "https://medium.com/@alinebier138"
+                },
+                {
+                    title: "Bir Ömür Nasıl Yasanır? İliber Ortaylı & Doğan Cüceloğlu'ndan Dersler",
+                    excerpt: "Giriş—İki Bilgenin Sofrasında Veya İki Kolaylaştırıcı Arasında Tarih ve insan bilimi çeşitli perspektiflerden insan yaşantısını...",
+                    date: "Aug 10, 2025",
+                    readTime: 9,
+                    link: "https://medium.com/@alinebier138"
+                },
+                {
+                    title: "Yolculuğun Hediyesi: Doğan Cüceloğlu'ndan Anlam, Özgürlük ve İnsan Olmak Üzerine",
+                    excerpt: "Yolculuğun Hediyesi: Doğan Cüceloğlu'ndan Anlam, Özgürlük ve İnsan Olmak Üzerine Giriş:",
+                    date: "Aug 17, 2025",
+                    readTime: 8,
+                    link: "https://medium.com/@alinebier138"
+                },
+                {
+                    title: "Yapay Zekâ'nın Gerçek Hikâyesi: Kod Yazmadan Öğrenen Makineler",
+                    excerpt: "Yapay zekâ doktorlarıyla yönetilen sanal hastanesi, ChatGPT'nin evrimi ve transformer mimarisinin gücü hakkında derinlemesine bir bakış.",
+                    date: "Aug 3, 2025",
+                    readTime: 10,
+                    link: "https://medium.com/@alinebier138"
+                },
+                {
+                    title: "Şevket Süreyya Aydemir'in Suyu Arayan Adam Kitabı Üzerine",
+                    excerpt: "İnkılap kabul edilmiş fakat izah edilmemiş bir şeydi. Şevket Süreyya Aydemir, Suyu Arayan Adam kitabı üzerinde...",
+                    date: "Oct 12, 2025",
+                    readTime: 6,
+                    link: "https://medium.com/@alinebier138"
+                },
+                {
+                    title: "Balina (The Whale)",
+                    excerpt: "İnsan, kendini affettiği anda, ölüm bile onu esir alamaz. Bir film düşünün, 1972 yılında çıkmış, üzerinden yıllar...",
+                    date: "Oct 12, 2025",
+                    readTime: 7,
+                    link: "https://medium.com/@alinebier138"
+                },
+                {
+                    title: "Sessiz Bir Yalnızlık Çağı",
+                    excerpt: "Bu kadar mükemmel bir dostluk, dünyada ancak bir kez kuruldu; çünkü iki kişi aynı anda doğmuştu.",
+                    date: "Nov 1, 2025",
+                    readTime: 5,
+                    link: "https://medium.com/@alinebier138"
+                },
+                {
+                    title: "Yapay Zekâ'nın Godfather'i: Geoffrey Hinton",
+                    excerpt: "Yapay zekâ alanının öncü isimlerinden biri olan Geoffrey Hinton, derin öğrenme ve yapay sınır ağlarının gelişim yolunda büyük katkı sağladı.",
+                    date: "Oct 13, 2024",
+                    readTime: 7,
+                    link: "https://medium.com/@alinebier138"
+                },
+                {
+                    title: "Stanford Hapishane Deneyi: Otoritenin İnsan Psikolojisi Üzerindeki Gücü",
+                    excerpt: "Yapay zekâ teknolojileri hızla gelişmeye devam ederken, büyük teknoloji şirketleri daha verimli ve etkili yönetmeler kullanmaya...",
+                    date: "Oct 12, 2024",
+                    readTime: 8,
+                    link: "https://medium.com/@alinebier138"
+                },
+                {
+                    title: "Yapay Zekâ Dünyasında Sentetik Verilerin Dönemi Mi?",
+                    excerpt: "Yapay zekâ teknolojileri hızla gelişmeye devam ederken, büyük teknoloji şirketleri daha verimli ve etkili yönetme sistemleri...",
+                    date: "Oct 11, 2024",
+                    readTime: 9,
+                    link: "https://medium.com/@alinebier138"
+                },
+                {
+                    title: "Fernand Braudel: Tarih Yazımında Devrimci Bir Yaklaşım",
+                    excerpt: "İnkılap kabul edilmiş fakat izah edilmemiş bir şeydi. Fernand Braudel, tarih yazımında devrimci bir yaklaşım ortaya koydu.",
+                    date: "Oct 20, 2024",
+                    readTime: 6,
+                    link: "https://medium.com/@alinebier138"
+                },
+                {
+                    title: "Disiplin: İnsanın Kendisiyle Mücadelesi",
+                    excerpt: "Disiplin, yaşamımızın her alanında karşımıza çıkan, ancak genellikle derlemesine düşünmediğimiz karmaşık bir kazanımdır.",
+                    date: "Oct 23, 2024",
+                    readTime: 7,
+                    link: "https://medium.com/@alinebier138"
+                },
+                {
+                    title: "Büyük Kiros",
+                    excerpt: "Bir kültürün yükseliş ve çöküşünü anlamak için, o kültürün en önemli figürlerini incelemek gerekir.",
+                    date: "Oct 25, 2024",
+                    readTime: 5,
+                    link: "https://medium.com/@alinebier138"
+                },
+                {
+                    title: "Kuantum Bilgisayarların Tehdit Ettiği Gelecek",
+                    excerpt: "Günümüz dünyasında savaşlar, politika ve sosyal medya alanlarında geçse de, yapay zekâ teknolojileri hızlı gelişmeye...",
+                    date: "Nov 15, 2024",
+                    readTime: 8,
+                    link: "https://medium.com/@alinebier138"
+                },
+                {
+                    title: "Hayatın Sessiz Dersleri",
+                    excerpt: "Sürdürülebilir bir yaşam, her anının derinliğini anlamakla başlar. İnsan kendini her zaman meşUl eder ama aslında...",
+                    date: "Nov 17, 2024",
+                    readTime: 6,
+                    link: "https://medium.com/@alinebier138"
+                },
+                {
+                    title: "Orijinal Fikirler Nerede Doğar ve Neden Bu Kadar Zordur?",
+                    excerpt: "Dünyayı değiştiren fikirlerin sıradan kalıplarının dışına çıkma cesaretinden doğar. Ancak bu cesaret göstermek, kulağa...",
+                    date: "Nov 18, 2024",
+                    readTime: 7,
+                    link: "https://medium.com/@alinebier138"
+                },
+                {
+                    title: "Bilgi Çağında Öğrenmeyi Öğrenmek",
+                    excerpt: "Bilgi çağında yaşıyoruz. Her seyi bir yere koymak, ancak kimsenin geri alamadığı bir cümle ile hayatın her anında...",
+                    date: "Dec 1, 2024",
+                    readTime: 5,
+                    link: "https://medium.com/@alinebier138"
+                },
+                {
+                    title: "Difüzyon Transformatörü Nedir Ne İşe Yarar?",
+                    excerpt: "1. Arka Plan Giriş Difüzyon Transformatörü nedir? İlk olarak Google tarafından ortaya konulan bir model mimarisidir.",
+                    date: "Dec 12, 2024",
+                    readTime: 6,
+                    link: "https://medium.com/@alinebier138"
+                },
+                {
+                    title: "The Banshees of Inisherin: Dostluk ve Yalnızlık Üzerine",
+                    excerpt: "The Banshees of Inisherin: Dostluk ve Yalnızlık Üzerine Güzel Bir Film Düşünün, 1972 yılında çıkmış, üzerinden yıllar...",
+                    date: "Dec 12, 2024",
+                    readTime: 6,
+                    link: "https://medium.com/@alinebier138"
+                },
+                {
+                    title: "Sora'nın Hikayesi",
+                    excerpt: "Yapay zekâ, yaratıcı endüstrileri yeniden tanımlamaya devam ediyor. OpenAI'nin en son yenilik olan Sora, bu alanda önemli...",
+                    date: "Dec 12, 2024",
+                    readTime: 7,
+                    link: "https://medium.com/@alinebier138"
+                },
+                {
+                    title: "Zaman",
+                    excerpt: "Zaman, hayattaki en kıymetli ve sınırlı kaynaktır. Herkesin eşit miktarda sahip olduğu, ancak kimsenin geri alamadığı bir...",
+                    date: "Dec 21, 2024",
+                    readTime: 5,
+                    link: "https://medium.com/@alinebier138"
+                },
+                {
+                    title: "Yapay Zekâ mı Tehlikeli, Yoksa Onu Kullanantarlar mı?",
+                    excerpt: "Teknoloji masumdur. Ama ona komut veren paramçıklar olmayabilir. Yapay zekâ tehlikesi hakkında gerçekçi bir perspektif.",
+                    date: "Jul 14, 2025",
+                    readTime: 7,
+                    link: "https://medium.com/@alinebier138"
+                },
+                {
+                    title: "Sora ve Difüzyon Transformatörleri: Metinler Videoya Nasıl Dönüşüyor?",
+                    excerpt: "Görsel üretim teknolojileri son birkaç yılda baş döndürücü bir hızla gelişiyor. Sora'nın metinden video üretimi nasıl yapıyor?",
+                    date: "Jul 1, 2025",
+                    readTime: 9,
+                    link: "https://medium.com/@alinebier138"
+                },
+                {
+                    title: "Nedir Bu DeepSeek?",
+                    excerpt: "2025 yılında yapay zekâ dünyasında büyük bir sarsıntı girdik. Çin merkezli DeepSeek, sadece teknoloji dünyasını değil, kurtuluş Amerikan yapay zekâ endüstrisini de değiştirdi.",
+                    date: "Jan 31, 2025",
+                    readTime: 8,
+                    link: "https://medium.com/@alinebier138"
+                },
+                {
+                    title: "Çin, Dünyanın İlk Yapay Zekâ Ajan Hastanesini Kurdu",
+                    excerpt: "Dünyanın ilk yapay zekâ doktorlarıyla yönetilen sanal hastanesi artık gerçek. Tsinghua Üniversitesi'nin Yapay Zekâ Endüstrisi...",
+                    date: "May 16, 2025",
+                    readTime: 8,
+                    link: "https://medium.com/@alinebier138"
+                },
+                {
+                    title: "İntel Batıyor Mu? Piyasaya Tekrar Hakim Olabilir Mi?",
+                    excerpt: "Teknoloji endüstrisinin bu dönemindeki Intel'in durumu ve yapay zekâ çağında geri dönüş mümkün mü?",
+                    date: "Mar 7, 2025",
+                    readTime: 6,
+                    link: "https://medium.com/@alinebier138"
+                },
+                {
+                    title: "Yapay Zekâ Donanımla Buluşuyor",
+                    excerpt: "Algoritmaların donanım ile birleştiği noktada yapay zekâ yatırımları ve endüstri dönüşümleri başlıyor.",
+                    date: "Jan 7, 2025",
+                    readTime: 8,
+                    link: "https://medium.com/@alinebier138"
+                }
+            ];
+            
+            try {
+                // Try to fetch from RSS API with timeout
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 4000);
+                
+                const response = await fetch(
+                    `https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@${mediumUsername}&count=6`,
+                    { signal: controller.signal }
+                );
+                clearTimeout(timeoutId);
+                
+                const data = await response.json();
+                
+                if (data.status === 'ok' && data.items && data.items.length > 0) {
+                    blogGrid.innerHTML = '';
+                    
+                    // Reverse to show newest first
+                    const articles = data.items.slice(0, 6).reverse();
+                    
+                    articles.forEach(item => {
+                        const pubDate = new Date(item.pubDate);
+                        const formattedDate = pubDate.toLocaleDateString('en-US', { 
+                            year: 'numeric', 
+                            month: 'short', 
+                            day: 'numeric' 
+                        });
+                        
+                        const tempDiv = document.createElement('div');
+                        tempDiv.innerHTML = item.description;
+                        const fullText = tempDiv.textContent || tempDiv.innerText || '';
+                        const excerpt = fullText.substring(0, 150) + (fullText.length > 150 ? '...' : '');
+                        
+                        const wordCount = fullText.split(/\s+/).length;
+                        const readTime = Math.ceil(wordCount / 200) || 3;
+                        
+                        createBlogCard(item.title, excerpt, formattedDate, readTime, item.link, blogGrid);
+                    });
+                    
+                    document.querySelectorAll('.blog-card').forEach(card => {
+                        observer.observe(card);
+                    });
+                    
+                    // Reinitialize blog carousel after articles load
+                    initBlogCarousel();
+                } else {
+                    throw new Error('No articles from API');
+                }
+            } catch (error) {
+                console.log('Using fallback articles:', error.message);
+                
+                // Use fallback articles from Medium
+                blogGrid.innerHTML = '';
+                fallbackArticles.forEach(article => {
+                    createBlogCard(article.title, article.excerpt, article.date, article.readTime, article.link, blogGrid);
+                });
+                
+                document.querySelectorAll('.blog-card').forEach(card => {
+                    observer.observe(card);
+                });
+                
+                // Reinitialize blog carousel after articles load
+                initBlogCarousel();
+            }
+        }
+
+        // Blog Carousel Functionality
+        let blogCurrentSlide = 0;
+        let blogAutoPlayInterval;
+        const blogCarousel = document.getElementById('blog-carousel');
+        const blogPrevBtn = document.getElementById('blog-carousel-prev');
+        const blogNextBtn = document.getElementById('blog-carousel-next');
+        
+        function getBlogTotalSlides() {
+            return document.querySelectorAll('#blog-carousel .blog-card').length;
+        }
+        
+        function updateBlogCarousel() {
+            const blogTotalSlides = getBlogTotalSlides();
+            const visibleCards = window.innerWidth >= 768 ? 3 : window.innerWidth >= 480 ? 2 : 1;
+            
+            if (blogTotalSlides === 0) return;
+            
+            blogCarousel.scrollLeft = (blogCarousel.scrollWidth / blogTotalSlides) * blogCurrentSlide;
+            
+            // Update counter
+            document.querySelectorAll('#blog-carousel-counter').forEach(el => {
+                el.textContent = blogCurrentSlide + 1;
+            });
+            
+            document.querySelectorAll('#blog-carousel-total').forEach(el => {
+                el.textContent = blogTotalSlides;
+            });
+            
+            // Update button states
+            blogPrevBtn.disabled = blogCurrentSlide === 0;
+            blogNextBtn.disabled = blogCurrentSlide === blogTotalSlides - 1;
+        }
+
+        function goToBlogSlide(n) {
+            const blogTotalSlides = getBlogTotalSlides();
+            blogCurrentSlide = Math.max(0, Math.min(n, blogTotalSlides - 1));
+            updateBlogCarousel();
+            resetBlogAutoPlay();
+        }
+
+        function nextBlogSlide() {
+            const blogTotalSlides = getBlogTotalSlides();
+            if (blogCurrentSlide < blogTotalSlides - 1) {
+                blogCurrentSlide++;
+                updateBlogCarousel();
+                resetBlogAutoPlay();
+            }
+        }
+
+        function prevBlogSlide() {
+            if (blogCurrentSlide > 0) {
+                blogCurrentSlide--;
+                updateBlogCarousel();
+                resetBlogAutoPlay();
+            }
+        }
+
+        function blogAutoPlay() {
+            const blogTotalSlides = getBlogTotalSlides();
+            blogAutoPlayInterval = setInterval(() => {
+                if (blogCurrentSlide < blogTotalSlides - 1) {
+                    blogCurrentSlide++;
+                } else {
+                    blogCurrentSlide = 0;
+                }
+                updateBlogCarousel();
+            }, 5000);
+        }
+
+        function resetBlogAutoPlay() {
+            clearInterval(blogAutoPlayInterval);
+            blogAutoPlay();
+        }
+        
+        function initBlogCarousel() {
+            blogCurrentSlide = 0;
+            clearInterval(blogAutoPlayInterval);
+            updateBlogCarousel();
+            blogAutoPlay();
+        }
+
+        // Event listeners for blog carousel
+        blogPrevBtn.addEventListener('click', prevBlogSlide);
+        blogNextBtn.addEventListener('click', nextBlogSlide);
+
+        // Pause autoplay on hover
+        blogCarousel.addEventListener('mouseenter', () => clearInterval(blogAutoPlayInterval));
+        blogCarousel.addEventListener('mouseleave', blogAutoPlay);
+
+        // Update on window resize
+        window.addEventListener('resize', () => {
+            if (blogCards.length > 0) {
+                updateBlogCarousel();
+            }
+        });
+
+        function createBlogCard(title, excerpt, date, readTime, link, container) {
+            const blogCard = document.createElement('div');
+            blogCard.className = 'blog-card';
+            blogCard.style.cursor = 'pointer';
+            blogCard.innerHTML = `
+                <div class="blog-date">${date}</div>
+                <div class="blog-title-text">${title}</div>
+                <div class="blog-excerpt">${excerpt}</div>
+                <div class="blog-category">Medium</div>
+                <div class="blog-read-time">
+                    <span>📖 ${readTime} min read</span>
+                </div>
+            `;
+            
+            blogCard.addEventListener('click', () => {
+                window.open(link, '_blank', 'noopener');
+            });
+            
+            blogCard.addEventListener('mouseenter', () => {
+                blogCard.style.transform = 'translateY(-10px)';
+            });
+            
+            blogCard.addEventListener('mouseleave', () => {
+                blogCard.style.transform = 'translateY(0)';
+            });
+            
+            container.appendChild(blogCard);
+        }
+        const nav = document.querySelector('nav');
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+            });
+        });
+
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrolled = (scrollTop / docHeight) * 100;
+            progressBar.style.width = scrolled + '%';
+
+            if (scrollTop > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // Intersection Observer for Animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.timeline-item, .project-card, .skill-category, .publication-item').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Start typing animation
+        typeRole();
+
+        // Initialize galaxy animation
+        createStars();
+
+        // Load Medium articles
+        loadMediumArticles();
+
+        // Smooth scroll for buttons
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
